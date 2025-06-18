@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Notre histoire – Etienne & Margaux</title>
+  <style>
+    body {
+      font-family: 'Georgia', serif;
+      background: linear-gradient(to bottom right, #ffe3ec, #fff5f9);
+      color: #333;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    #game {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      max-width: 600px;
+      width: 90%;
+    }
+    h1 {
+      text-align: center;
+      color: #c94f7c;
+    }
+    #story {
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+    .choice {
+      display: block;
+      background-color: #c94f7c;
+      color: white;
+      border: none;
+      padding: 0.7rem 1.2rem;
+      margin: 0.5rem 0;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.3s;
+    }
+    .choice:hover {
+      background-color: #a83f65;
+    }
+    footer {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div id="game">
+    <h1>Notre histoire ❤️</h1>
+    <div id="story">Chargement...</div>
+    <div id="choices"></div>
+    <footer>Un jeu d’amour par Etienne</footer>
+  </div>
+  <script>
+    const story = document.getElementById('story');
+    const choices = document.getElementById('choices');
+    const scenes = {
+      start: {
+        text: "Tout a commencé au collège... Deux ados, Etienne et Margaux, qui se croisaient entre deux cours. Une complicité naissante.",
+        options: [{ text: "Avancer dans le temps", next: "rooftop" }]
+      },
+      rooftop: {
+        text: "Quelques années plus tard, sous un ciel étoilé, un moment magique : un premier baiser échangé sur un rooftop. Le cœur battant, le monde en pause.",
+        options: [{ text: "Se souvenir de ce moment", next: "appart" }]
+      },
+      appart: {
+        text: "Puis est venu le grand saut : leur premier appartement ensemble. Entre cartons, rires et plans IKEA, une vraie vie à deux s’est construite.",
+        options: [{ text: "Entrer dans leur quotidien", next: "anniversaire" }]
+      },
+      anniversaire: {
+        text: "Le jour des 25 ans de Margaux, Etienne avait tout préparé : une surprise, des bougies, et beaucoup d’amour. Un moment inoubliable.",
+        options: [{ text: "Revivre l’émotion", next: "final" }]
+      },
+      final: {
+        text: "Aujourd’hui, leur histoire continue, plus forte que jamais. Une aventure unique, sincère, pleine de tendresse et de fous rires.",
+        options: [{ text: "Lire le mot d'amour 💌", next: "loveletter" }]
+      },
+      loveletter: {
+        text: "Margaux,\n\nChaque instant passé avec toi est une aventure que je ne veux jamais voir finir. Merci d’être celle que j’aime, aujourd’hui et pour toujours.\n\n— Etienne 💕",
+        options: [{ text: "Recommencer l’histoire", next: "start" }]
+      }
+    };
+    let current = 'start';
+    function render(sceneKey) {
+      const scene = scenes[sceneKey];
+      story.textContent = '';
+      choices.innerHTML = '';
+      let i = 0;
+      const text = scene.text;
+      const speed = 20;
+      const interval = setInterval(() => {
+        if (i < text.length) {
+          story.textContent += text[i++];
+        } else {
+          clearInterval(interval);
+        }
+      }, speed);
+      scene.options.forEach(option => {
+        const button = document.createElement('button');
+        button.textContent = option.text;
+        button.className = 'choice';
+        button.onclick = () => render(option.next);
+        choices.appendChild(button);
+      });
+      current = sceneKey;
+    }
+    render(current);
+  </script>
+</body>
+</html>
